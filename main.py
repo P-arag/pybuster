@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
 import requests
-import threading
-from bs4 import BeautifulSoup
 from colors import color
 import click
 import time
@@ -11,17 +9,16 @@ import socket
 from urllib.parse import urlparse
 import pyfiglet
 
-words = []
-
 
 @click.command()
 @click.option('--url', '-u')
 @click.option('--wordlist', '-w')
 @click.option('-ip/-np', default=False)
 @click.option('--save', '-s')
-@click.option('-f/--nf', default=True)
+@click.option('-f/-nf', default=True)
 @click.option('-v/-nv', default=False)
-def main(url, wordlist, ip, save, f, v):
+@click.option("--extensions", '-x')
+def main(url, wordlist, ip, save, f, v, extensions):
     header = color.GREEN+f'''
 ########################################################
 {pyfiglet.figlet_format("PyBuster", font='slant')}
@@ -32,7 +29,7 @@ def main(url, wordlist, ip, save, f, v):
 
     try:
         page = requests.get(url)
-        header = header+f"""
+        header += f"""
 ########################################################
 ## Url       ## {url}
         """
@@ -57,7 +54,7 @@ def main(url, wordlist, ip, save, f, v):
         print(color.RED+"Invalid wordlist location")
         exit()
 
-    header = header + f'''
+    header += f'''
 ## Wordslist ## {wordlist}
     '''
 
@@ -68,7 +65,7 @@ def main(url, wordlist, ip, save, f, v):
         except Exception as err:
             ip = err
 
-    header = header + f'''
+    header += f'''
 ## IP        ## {ip}   
     '''
 
@@ -77,63 +74,81 @@ def main(url, wordlist, ip, save, f, v):
         exit()
 
     elif save is not None and os.path.exists(save):
-        header = header + f'''
+        header += f'''
 ## Save      ## {save}
+        '''
+
+    if extensions is not None:
+        if extensions.count(",") > 0:
+            extensionsArr = extensions.split(",")
+            extensionsArr.append("")
+    else:
+        extensionsArr = [""]
+
+    header += f"""
+## Xtensions ## {extensionsArr}    
+    """
+
+    if v:
+        header += f'''
+## Verbose   ## {v}    
+        '''
+
+    if f:
+        header += f'''
+## Fails     ## {f}        
         '''
 
     print(header)
     time.sleep(3)
     print(color.BLUE+"PyBuster is starting......")
     time.sleep(2)
-    buster(url, wordlist, save, f, verbose=v)
+    buster(url, wordlist, save, f, v, xtensions=extensionsArr)
 
 
-def buster(url, wordslist, save, fails, verbose):
+def buster(url, wordslist, save, fails, verbose, xtensions):
     GOT = 0
     SUS = 0
     FAILED = 0
-
+    setBreak= False
     with open(wordslist) as f:
         print("Getting wordslist\n#############################################################")
-        for line in f.readlines():
-            try:
-                newPage = requests.get(url+line.strip("\n"))
-                if verbose and newPage.status_code == 200:
-                    print(color.GREEN+"Got endpoint /"+line.strip("\n") +
-                          f" Status code:- {newPage.status_code}", end='  ')
-                    print(color.PINK+"BUT it looks like a 404 page tho")
-                    SUS += 1
-                elif verbose and str(newPage.content).count("404") > 0:
-                    print(color.GREEN+"Got endpoint /"+line.strip("\n") +
-                          f" Status code:- {newPage.status_code}", end='  ')
-                    print(color.PINK+"Looks sus, my not be a proper endpoint")
-                    SUS += 1
 
-                else:
-                    print(color.GREEN+"Got endpoint /"+line.strip("\n"))
-                    GOT += 1
-                # print(newPage.content)
-                if save is not None:
-                    endpointFile = open(save, 'a')
-                    endpointFile.write(url+line)
-                    endpointFile.close()
-                # print(url+line.strip("\n"))
-            except KeyboardInterrupt:
-                break
-            except Exception as e:
-                if fails:
-                    # print(e)
-                    print(color.RED+line.strip("\n") + "  Failed")
-                    FAILED += 1
-    print(color.BLUE(f"Output: \n Got: {GOT}\n Sus: {SUS}\n Failed: {FAILED}"))     
+        for line in f.readlines():
+            for xtension in xtensions:
+                xtension = xtension.strip()
+                try:
+                    URL = url + line.strip("\n")
+                    newPage = requests.get(URL+xtension)
+                    if verbose and str(newPage.content).count("404") > 0:
+                        print(color.GREEN+"Got endpoint /"+line.strip("\n")+xtension +
+                              f" Status code:- {newPage.status_code}", end='  ')
+                        print(color.PINK+"Looks sus, might not be a proper endpoint (404)")
+                        SUS += 1
+
+                    else:
+                        print(color.GREEN+"Got endpoint /" +
+                              line.strip("\n")+xtension)
+                        GOT += 1
+                    # print(newPage.content)
+                    if save is not None:
+                        endpointFile = open(save, 'a')
+                        endpointFile.write(URL+xtension+"\n")
+                        endpointFile.close()
+                    # print(url+line.strip("\n"))
+                except KeyboardInterrupt:
+                    setBreak = True
+                    break
+                except Exception as e:
+                    if fails:
+                        # print(e)
+                        print(color.RED+line.strip("\n")+xtension + " Failed")
+                        FAILED += 1
+            if setBreak:
+                break            
+
+    print(color.BLUE+f"Output: \n Got: {GOT}\n Sus: {SUS}\n Failed: {FAILED}")
 
 
 if __name__ == "__main__":
     main()
-
-# url = input(color.GREEN+"Enter a valid url:- ")
-# recursive = True
-
-
-# #
-# #http://13.126.7.62/

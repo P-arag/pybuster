@@ -1,53 +1,34 @@
 # PyBuster
-  -cn
-    	Show CNAME records (dns mode only, cannot be used with '-i' option)
 
-  -e	Expanded mode, print full URLs
+# URGENT: Need help in threading
 
-  -f	Append a forward-slash to each directory request (dir mode only)
+## It's gobuster but in python
 
-  -fw
-    	Force continued operation when wildcard found
+### Why did I make it??
 
-  -i	Show IP addresses (dns mode only)
+### Because I **can**
 
-  -l	Include the length of the body in the output (dir mode only)
+---
 
-  -m string
-    	Directory/File mode (dir) or DNS mode (dns) (default "dir")
+## Installation instructions:
 
-  -n	Don't print status codes
+```terminal
+git clone https://github.com/P-arag/pybuster
+unzip pybuster
+cd pybuster
+pip install -r requirements.txt
+```
 
-  -np
-    	Don't display progress
+---
 
-  -o string
-    	Output file to write results to (defaults to stdout)
+## Usage Instructions
 
-  -p string
-    	Proxy to use for requests [http(s)://host:port] (dir mode only)
-
-  -q	Don't print the banner and other noise
-
-  -r	Follow redirects
-
-  -s string
-    	Positive status codes (dir mode only) (default "200,204,301,302,307,403")
-
-  -t int
-    	Number of concurrent threads (default 10)
-
-  -to duration
-    	HTTP Timeout in seconds (dir mode only) (default 10s)
-
-  -u string
-    	The target URL or Domain
-
-  -v	Verbose output (errors)
-
-  -w string
-    	Path to the wordlist
-
-  -x string
-    	File extension(s) to search for (dir mode only)
-
+| Option          | Description                                                                           | Usage                           | Default                             |
+| --------------- | ------------------------------------------------------------------------------------- | ------------------------------- | ----------------------------------- |
+| --url/-u        | Specifies the url of the site                                                         | -u <.url>                       | None (Necessary)                    |
+| --wordslist/-w  | Specifies the wordslist used in brute-forcing                                         | -w <.valid .txt file_path>      | ./wordslists/common.txt (Necessary) |
+| -ip or -np      | -ip: Show the ip address of the website -np:Do not Show the ip                        | -ip or -np (no values required) | -np                                 |
+| --save/-s       | Specifies the files to which the endpoints will ne appended                           | -s <.valid file_path>           | None                                |
+| -f or -nf       | -f : Show the failed requests -nf : Do not show the failed requests                   | -f or -nf (no values required)  | -f                                  |
+| -v or -nv       | -v: Show verbose output (Sometimes Kinda annoying tho) -nv: Don't show verbose output | -v or -nv (no values required)  | No values required                  |
+| --extensions/-x | Specifies the extension of the particular endpoint                                    | -x ".php, .txt, .etc"           | Empty string ""                     |
