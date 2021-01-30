@@ -1,7 +1,5 @@
 # PyBuster
 
-# URGENT: Need help in threading
-
 ## It's gobuster but in python
 
 ### Why did I make it??
@@ -38,3 +36,8 @@ pip install -r requirements.txt
 | -f or -nf       | -f : Show the failed requests -nf : Do not show the failed requests                   | -f or -nf (no values required)  | -f                                  |
 | -v or -nv       | -v: Show verbose output (Sometimes Kinda annoying tho) -nv: Don't show verbose output | -v or -nv (no values required)  | No values required                  |
 | --extensions/-x | Specifies the extension of the particular endpoint                                    | -x ".php, .txt, .etc"           | Empty string ""                     |
+
+## Example
+```terminal
+python pybuster.py -u https://amazon.com -w ./wordslists/big.txt -ip -s ./endpoints.txt -nf -x ".php,.html, .txt"  
+```
