@@ -42,5 +42,5 @@ pip install -r requirements.txt
 ## Example
 ### PS: Plz do not do something illegal with it....., try it on the test website that I have provided
 ```terminal
-python pybuster.py -u https://amazon.com -w ./wordslists/big.txt -ip -s ./endpoints.txt -nf -x ".php,.html, .txt" -t 40
+python pybuster.py -u http://127.0.0.1 -w ./wordslists/big.txt -ip -s ./endpoints.txt -nf -x ".php,.html, .txt" -t 40
 ```
