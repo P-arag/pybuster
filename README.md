@@ -40,7 +40,7 @@ pip install -r requirements.txt
 | --threads/-t    | Specifies the number of concurrent threads to be run at once                          | -t <.positive integer>          | 30                                  |
 
 ## Example
-
+### PS: Plz do not do something illegal with it....., try it on the test website that I have provided
 ```terminal
 python pybuster.py -u https://amazon.com -w ./wordslists/big.txt -ip -s ./endpoints.txt -nf -x ".php,.html, .txt" -t 40
 ```
