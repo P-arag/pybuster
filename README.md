@@ -5,12 +5,13 @@
 ### Why did I make it??
 
 ### Because I **can**
+
 ---
 
 ![](https://raw.githubusercontent.com/P-arag/pybuster/main/screenshots/pybuster1.jpg)
 ![](https://raw.githubusercontent.com/P-arag/pybuster/main/screenshots/pybuster2.jpg)
 
-***PyBuster at work :fire: :fire: :point_up:***
+**_PyBuster at work :fire: :fire: :point_up:_**
 
 ---
 
@@ -36,8 +37,10 @@ pip install -r requirements.txt
 | -f or -nf       | -f : Show the failed requests -nf : Do not show the failed requests                   | -f or -nf (no values required)  | -f                                  |
 | -v or -nv       | -v: Show verbose output (Sometimes Kinda annoying tho) -nv: Don't show verbose output | -v or -nv (no values required)  | No values required                  |
 | --extensions/-x | Specifies the extension of the particular endpoint                                    | -x ".php, .txt, .etc"           | Empty string ""                     |
+| --threads/-t    | Specifies the number of concurrent threads to be run at once                          | -t <.positive integer>          | 30                                  |
 
 ## Example
+
 ```terminal
-python pybuster.py -u https://amazon.com -w ./wordslists/big.txt -ip -s ./endpoints.txt -nf -x ".php,.html, .txt"  
+python pybuster.py -u https://amazon.com -w ./wordslists/big.txt -ip -s ./endpoints.txt -nf -x ".php,.html, .txt" -t 40
 ```
