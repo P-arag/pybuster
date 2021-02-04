@@ -13,7 +13,7 @@ from tqdm import tqdm
 
 
 @click.command()
-@click.option('--url', '-u')
+@click.option('--url', '-u', help="For help visit https://github.com/P-arag/pybuster")
 @click.option('--wordlist', '-w')
 @click.option('-ip/-np', default=False)
 @click.option('--save', '-s')
@@ -22,10 +22,10 @@ from tqdm import tqdm
 @click.option("--extensions", '-x')
 @click.option("--threads", "-t", default=30)
 def main(url, wordlist, ip, save, f, v, extensions, threads):
-    header = color.GREEN+f'''
+    header = color.GREEN+'''
 ########################################################
-{pyfiglet.figlet_format("PyBuster", font='slant')}
-    '''
+{}
+    '''.format(pyfiglet.figlet_format("PyBuster", font='slant').strip("\n") + " By: P-arag@github.com")
 
     if url[-1] != "/":
         url = url + "/"
